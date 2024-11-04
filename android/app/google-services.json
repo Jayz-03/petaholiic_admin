@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "82362499274",
+    "firebase_url": "https://petaholic-4b075-default-rtdb.firebaseio.com",
+    "project_id": "petaholic-4b075",
+    "storage_bucket": "petaholic-4b075.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:82362499274:android:f7fdb507df4d3057cf3433",
+        "android_client_info": {
+          "package_name": "com.example.petaholic"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDr4T9K8opMi5tT0_FSYo9EAWgf5YF4RKU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:82362499274:android:587699556a87f5d4cf3433",
+        "android_client_info": {
+          "package_name": "com.example.petaholiic_admin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDr4T9K8opMi5tT0_FSYo9EAWgf5YF4RKU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
