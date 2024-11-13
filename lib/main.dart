@@ -6,8 +6,7 @@ import 'package:petaholiic_admin/screens/splashscreen/splashscreen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge,
-      overlays: [SystemUiOverlay.top]);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
   runApp(const MainApp());
 }

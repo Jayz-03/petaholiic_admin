@@ -15,7 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final _formKey = GlobalKey<FormState>(); // Form key for validation
+  final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   bool _isPasswordVisible = false;
   var height, width;
@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 20),
                 _header(context),
                 Form(
-                  key: _formKey, // Attach the form key here
+                  key: _formKey,
                   child: _inputField(context),
                 ),
               ],
@@ -198,7 +198,7 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.message ?? 'Login failed')),
+          SnackBar(content: Center(child: Text('Invalid email or password!')), backgroundColor: Colors.red),
         );
       } finally {
         setState(() {

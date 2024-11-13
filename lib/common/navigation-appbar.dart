@@ -25,7 +25,7 @@ class _SideAndTabsNavsState extends State<SideAndTabsNavs> {
     HomeScreen(),
     ProductScreen(),
     TelemedicineScreen(),
-    AppointmentScreen(),
+    AdminAppointmentScreen(),
   ];
 
   @override
@@ -63,46 +63,37 @@ class _SideAndTabsNavsState extends State<SideAndTabsNavs> {
   Widget build(BuildContext context) {
     final User? user = FirebaseAuth.instance.currentUser;
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 0, 86, 99),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Positioned.fill(
-              child: Image.asset(
-                'assets/images/bgappbar.png',
-                fit: BoxFit.cover,
-              ),
+        child: AppBar(
+          backgroundColor: Colors.transparent,
+          leading: Builder(
+            builder: (context) => IconButton(
+              icon: const Icon(Iconsax.menu, color: Colors.white),
+              onPressed: () => Scaffold.of(context).openDrawer(),
             ),
-            AppBar(
-              backgroundColor: Colors.transparent,
-              leading: Builder(
-                builder: (context) => IconButton(
-                  icon: const Icon(Iconsax.menu, color: Colors.white),
-                  onPressed: () => Scaffold.of(context).openDrawer(),
-                ),
+          ),
+          title: Image.asset(
+            'assets/images/petaholic-logo.png',
+            width: 50,
+            height: 50,
+          ),
+          centerTitle: true,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: InkWell(
+                onTap: () {
+                  // Navigate to search screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => NotificationScreen()),
+                  );
+                },
+                child: Icon(Iconsax.notification, color: Colors.white),
               ),
-              title: Image.asset(
-                'assets/images/petaholic-logo.png',
-                width: 50,
-                height: 50,
-              ),
-              centerTitle: true,
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: InkWell(
-                    onTap: () {
-                      // Navigate to search screen
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => NotificationScreen()),
-                      );
-                    },
-                    child: Icon(Iconsax.notification, color: Colors.white),
-                  ),
-                ),
-              ],
             ),
           ],
         ),
@@ -154,15 +145,15 @@ class _SideAndTabsNavsState extends State<SideAndTabsNavs> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => AboutUsScreen()),
+                      MaterialPageRoute(builder: (context) => AboutUsScreen()),
                     );
                   },
                 ),
                 SizedBox(height: 50),
                 ListTile(
                   leading: Icon(Iconsax.logout, color: Colors.white),
-                  title: Text('Log out', style: GoogleFonts.lexend(color: Colors.white)),
+                  title: Text('Log out',
+                      style: GoogleFonts.lexend(color: Colors.white)),
                   onTap: () async {
                     bool? confirm = await showDialog<bool>(
                       context: context,
@@ -263,8 +254,8 @@ class _SideAndTabsNavsState extends State<SideAndTabsNavs> {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Iconsax.shopping_cart),
-              label: 'Products',
+              icon: Icon(Iconsax.box),
+              label: 'Inventory',
             ),
             BottomNavigationBarItem(
               icon: Icon(Iconsax.call),
