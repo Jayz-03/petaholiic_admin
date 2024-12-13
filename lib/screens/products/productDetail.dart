@@ -43,43 +43,114 @@ class ProductDetailScreen extends StatelessWidget {
             Map<dynamic, dynamic> productDetails =
                 snapshot.data!.snapshot.value as Map<dynamic, dynamic>;
 
+            // Get the product quantity and determine stock status
+            int quantity = productDetails['quantity'] ?? 0;
+            String status = quantity < 20 ? 'Low Stock' : 'In Stock';
+
             return Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Product Image
                   productDetails['photoUrl'] != null
                       ? Center(
-                          child: Image.network(
-                            productDetails['photoUrl'],
-                            height: 200,
-                            fit: BoxFit.cover,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.network(
+                              productDetails['photoUrl'],
+                              height: 200,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         )
                       : const Center(child: Icon(Icons.image, size: 100)),
                   const SizedBox(height: 16),
+
+                  // Product Name
                   Text(
                     '${productDetails['name'] ?? 'N/A'}',
                     style: GoogleFonts.lexend(
-                        fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                        fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                   Text(
                     '${productDetails['category'] ?? 'N/A'}',
-                    style: GoogleFonts.lexend(fontSize: 14, color: Colors.white),
+                    style: GoogleFonts.lexend(fontSize: 16, color: Colors.white),
                   ),
                   const SizedBox(height: 8),
+
+                  // Price
                   Text(
                     '₱${productDetails['price']?.toStringAsFixed(2) ?? 'N/A'}',
-                    style: GoogleFonts.lexend(fontSize: 16, color: Colors.white),
+                    style: GoogleFonts.lexend(fontSize: 18, color: Colors.white),
                   ),
-                  Text(
-                    'Status: ${productDetails['status'] ?? 'N/A'}',
-                    style: GoogleFonts.lexend(fontSize: 16, color: Colors.white),
+                  const SizedBox(height: 8),
+
+                  // Stock Status
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+                    decoration: BoxDecoration(
+                      color: quantity < 20 ? Colors.red : Colors.green,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Text(
+                      'Status: $status',
+                      style: GoogleFonts.lexend(
+                          fontSize: 16, color: Colors.white, fontWeight: FontWeight.w600),
+                    ),
                   ),
-                  const SizedBox(height: 10),
-                  Text(
-                    '${productDetails['description'] ?? 'N/A'}',
-                    style: GoogleFonts.lexend(fontSize: 14, color: Colors.white),
+                  const SizedBox(height: 16),
+
+                  // Stocks (Quantity)
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 4,
+                    color: Colors.white.withOpacity(0.1),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Stocks Available:',
+                            style: GoogleFonts.lexend(
+                                fontSize: 16, color: Colors.white, fontWeight: FontWeight.w600),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              '$quantity',
+                              style: GoogleFonts.lexend(
+                                  fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Product Description
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 4,
+                    color: Colors.white.withOpacity(0.1),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        '${productDetails['description'] ?? 'N/A'}',
+                        style: GoogleFonts.lexend(fontSize: 16, color: Colors.white),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -88,7 +159,7 @@ class ProductDetailScreen extends StatelessWidget {
             return Center(
               child: Text(
                 'Product not found!',
-                style: GoogleFonts.lexend(),
+                style: GoogleFonts.lexend(fontSize: 18, color: Colors.white),
               ),
             );
           }

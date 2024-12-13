@@ -93,10 +93,19 @@ class _ProductScreenState extends State<ProductScreen> {
                       var productKey = productEntries[index].key;
                       var product = productEntries[index].value;
 
+                      // Determine stock status
+                      int quantity = product['quantity'] ?? 0;
+                      String stockStatus = quantity < 20
+                          ? 'Low Stock'
+                          : 'In Stock';
+
                       return Card(
                         color: Colors.white,
-                        elevation: 4,
+                        elevation: 6,
                         margin: const EdgeInsets.all(8.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                         child: InkWell(
                           onTap: () {
                             Navigator.push(
@@ -108,6 +117,7 @@ class _ProductScreenState extends State<ProductScreen> {
                             );
                           },
                           child: ListTile(
+                            contentPadding: const EdgeInsets.all(16),
                             leading: product['photoUrl'] != null
                                 ? Image.network(product['photoUrl'],
                                     width: 50, height: 50, fit: BoxFit.cover)
@@ -116,15 +126,51 @@ class _ProductScreenState extends State<ProductScreen> {
                               product['name'] ?? 'No Name',
                               style: GoogleFonts.lexend(
                                   color: Colors.black,
-                                  fontSize: 14,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w600),
                             ),
-                            subtitle: Text(
-                              '${product['category'] ?? 'N/A'}\n${product['status']}',
-                              style: GoogleFonts.lexend(
-                                  color: Colors.black,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${product['category'] ?? 'N/A'}',
+                                  style: GoogleFonts.lexend(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                const SizedBox(height: 4),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '$stockStatus',
+                                      style: GoogleFonts.lexend(
+                                          color: stockStatus == 'Low Stock'
+                                              ? Colors.red
+                                              : Colors.green,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 4, horizontal: 10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue.withOpacity(0.2),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Text(
+                                        'Stocks: $quantity',
+                                        style: GoogleFonts.lexend(
+                                            color: Colors.black,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,

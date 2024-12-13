@@ -384,13 +384,13 @@ class _AdminAppointmentScreenState extends State<AdminAppointmentScreen>
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image.asset(
-                            'assets/images/doglayered.png',
+                            'assets/images/questionmark.png',
                             width: 200,
                             height: 200,
                           ),
                           Text(
                             textAlign: TextAlign.center,
-                            'Currently, there is no upcoming appointment list here.',
+                            'Currently, there is no upcoming \nappointment list here.',
                             style: GoogleFonts.lexend(
                               fontSize: 16,
                               color: Color.fromARGB(255, 0, 86, 99),
@@ -422,13 +422,13 @@ class _AdminAppointmentScreenState extends State<AdminAppointmentScreen>
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image.asset(
-                            'assets/images/doglayered.png',
+                            'assets/images/questionmark.png',
                             width: 200,
                             height: 200,
                           ),
                           Text(
                             textAlign: TextAlign.center,
-                            'Currently, there is no past appointment list here.',
+                            'Currently, there is no past \nappointment list here.',
                             style: GoogleFonts.lexend(
                               fontSize: 16,
                               color: Color.fromARGB(255, 0, 86, 99),

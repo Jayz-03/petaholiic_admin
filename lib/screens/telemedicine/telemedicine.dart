@@ -106,14 +106,14 @@ class _TelemedicineScreenState extends State<TelemedicineScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'assets/images/doglayered.png',
+                        'assets/images/questionmark.png',
                         width: 200,
                         height: 200,
                       ),
                       Text(
                         textAlign: TextAlign.center,
-                        'Currently, there is no approved appointments yet.',
-                        style: GoogleFonts.robotoCondensed(
+                        'Currently, there is no approved \nappointments yet.',
+                        style: GoogleFonts.lexend(
                           fontSize: 16,
                           color: Color.fromARGB(255, 0, 86, 99),
                         ),
@@ -134,7 +134,7 @@ class _TelemedicineScreenState extends State<TelemedicineScreen> {
                             height: 30),
                         title: Text(
                           '${appointment['firstName']} ${appointment['lastName']}',
-                          style: GoogleFonts.robotoCondensed(
+                          style: GoogleFonts.lexend(
                             fontSize: 18,
                             color: Color.fromARGB(255, 0, 86, 99),
                             fontWeight: FontWeight.bold,
@@ -142,7 +142,7 @@ class _TelemedicineScreenState extends State<TelemedicineScreen> {
                         ),
                         subtitle: Text(
                           '${appointment['service']} - ${appointment['appointmentDate']}',
-                          style: GoogleFonts.robotoCondensed(
+                          style: GoogleFonts.lexend(
                             fontSize: 12,
                             color: Colors.grey,
                           ),

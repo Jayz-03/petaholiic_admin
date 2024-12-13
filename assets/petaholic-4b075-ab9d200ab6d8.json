@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "petaholic-4b075",
+  "private_key_id": "ab9d200ab6d8e746ef1534e452688d7af8fd86eb",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQC/BpXRR0K6fwkL\nOr59aSlAC8AOX0AIcOVXF3QTQiEcCy/ljNLnsPKKBZl6WkLiJMMpu0JQTS59M+Um\nzZCWTzSSVxY+MuaWxfwKyYX3lSCdJNnKosF2G5nrbAg4NwPGQa8GwZQiX9IJ1eZS\n+BhdRmVIAJ3E7xO+p7cAAUbiz8wV0avEwukld4fHNoQDObdac6Yf2aC/K/FrFISN\nZZe3nKO4IoYx0YlAzy2ivRotjLI+T02cCXl55Y8l9ZbkKGRjuloBrOfHaa0Xnt2q\nxULheeKxekNactcVMn/xf4Vxi8m4MioKxaNrIS7El7M5IdIFJuZ/1o76/IQ/7TNG\nw5iRiJXvAgMBAAECggEAA9113NvVlLfJH55dz6+7pSQDBGsxInTw6ODTSEY8lgdo\n+hFP30CJY4hraadwDtQWAUpclgq2cw/mPo97k9Uc9wzuOATXV72TIhnNGmMAgUE8\nAdLt+7D/dD70uK3BOlrZWCKuRQIEjvgX9azN0hq8rZX05o0W/2PSsVh66l8o2+6Y\nQrFwsFp25OiEoTJlhAENRv9fXWpJM5oJTr8C8BHDij/0Eaadl2cH1Uuw1eeIwZxS\nN9Pptu/OqyL9wwiOyQvxyZOHoCLiDZwSycU+0HIKeU4e3lWMqLbsaNOS0AgwAkrM\nut7ndK5nmdWodPAeD4sxFElyEIzxo6Tjr35Os9PwgQKBgQDgfZ98QUDSC2CEnAJ7\nvx/xiZ/jsd/CYi2b0PJusieirnfa+iyitYYCRHcedWjcg0w2bvOyAJs1mwMlfBq/\nonzccF6EhAY5EI6mOAJ+t0pkDfABOuctwpeJXHUCAoq/X25XXXTXMvbYXc1xVdlP\nhiRALzwYhO2OLi6ohQs0gP8hgQKBgQDZ1oBsIXUJZ0EAQkNMM1L1VjQmOtR+b+uf\nWpINvq34DtXHQjt77t5c8w8xKqAje2bVB+P5OIbY6i82l8vKBe+Ib/FKE7C1M/V4\nLlxg2GKujuSgdpoaMAsfbCIYq2FEGm7T8zjUYpjKnCvtkMsoq6j9jXfvIOmopckY\nt2YTlDKPbwKBgQDLgbZZuwHbKAsoTBGIQtvfZ8a1cGOLYNs9vK55oTGDLaxjq5VZ\nLzu7xHtD9mXIOZKWagCrZhdOAidZDOdmwBN29rsIYHMPui3HC1FftCNRDr17L/2w\now4irNk5qDpFgGqT8pngGEhkHq0GSDAHAnDMasWM6Lw9vyn3BR0CTMp8gQKBgQDJ\n+Dorhz23ETfQIJ+6198zvtAtHeCEtgo1PkkqWz97PW3yCDOUrZ0Xevf78vR00WY/\nX8h7+m/0T/SkXktBLQ2wZ3HE58qvxtPxsLJPzHB6Pdw19qDcZOz7HkviqYtOFF/r\nPZfUOvJE8FU+N0BVngrZwz+Ow+pARi3UL76BqqbSGwKBgQDGMu+/PhNKxvwAxatT\nnGABdRpqJWlMPjww/Db8gnxmFeBbpgQyZ6TQcOfgX7y28CLb498HmJhIigxFV39o\neXM/rmHBxN65QeEwxRNdS9ZKu+LsobnWa86U3TP6wu3sct7PUDIfCM3ndUy2oF5c\nNrspc05wAnCzvwKna3c2L6OnYA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "petaholic-vet-clinic@petaholic-4b075.iam.gserviceaccount.com",
+  "client_id": "109114212726658280759",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/petaholic-vet-clinic%40petaholic-4b075.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

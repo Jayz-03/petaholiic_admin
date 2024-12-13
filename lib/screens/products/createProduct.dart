@@ -20,7 +20,8 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
-  String? _selectedStatus;
+  final TextEditingController _expirationDateController =
+      TextEditingController();
   File? _selectedImage;
   bool _isLoading = false;
 
@@ -30,6 +31,22 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
     if (pickedFile != null) {
       setState(() {
         _selectedImage = File(pickedFile.path);
+      });
+    }
+  }
+
+  Future<void> _selectExpirationDate() async {
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        _expirationDateController.text =
+            '${pickedDate.toLocal()}'.split(' ')[0];
       });
     }
   }
@@ -55,7 +72,7 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
           'description': _descriptionController.text,
           'price': double.parse(_priceController.text),
           'quantity': int.tryParse(_quantityController.text) ?? 0,
-          'status': _selectedStatus,
+          'expirationDate': _expirationDateController.text,
           'photoUrl': imageUrl,
         };
 
@@ -63,7 +80,9 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
         await databaseRef.push().set(productData);
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Product created successfully')),
+          const SnackBar(
+              content: Center(child: Text('Product created successfully')),
+              backgroundColor: Colors.green),
         );
 
         Navigator.pop(context);
@@ -110,15 +129,28 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
                       onTap: _pickImage,
                       child: Container(
                         height: 150,
-                        color: Colors.white,
-                        child: _selectedImage != null
-                            ? Image.file(_selectedImage!, fit: BoxFit.contain)
-                            : const Center(
+                        width: double
+                            .infinity, // Make the container fill horizontally
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(18),
+                          color: Colors.white.withOpacity(
+                              0.2), // Set the background color with opacity
+                          image: _selectedImage != null
+                              ? DecorationImage(
+                                  image: FileImage(_selectedImage!),
+                                  fit: BoxFit.cover,
+                                )
+                              : null,
+                        ),
+                        child: _selectedImage == null
+                            ? Center(
                                 child: Icon(
-                                Iconsax.image,
-                                color: Colors.black,
-                                size: 40,
-                              )),
+                                  Iconsax.image,
+                                  color: Colors.white,
+                                  size: 50,
+                                ),
+                              ) // Center the placeholder icon
+                            : null,
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -162,15 +194,14 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
                       controller: _priceController,
                       hintText: 'Price',
                       icon: Iconsax.money,
-                      keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
+                      keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null ||
                             value.isEmpty ||
-                            double.tryParse(value) == null) {
+                            int.tryParse(value) == null) {
                           return 'Please enter a valid price';
                         }
-                        final price = double.parse(value);
+                        final price = int.parse(value);
                         if (price < 0) {
                           return 'Price cannot be negative';
                         }
@@ -187,42 +218,31 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
                         if (value == null ||
                             value.isEmpty ||
                             int.tryParse(value) == null) {
-                          return 'Please enter a valid quantity';
+                          return 'Please enter a valid price';
+                        }
+                        final price = int.parse(value);
+                        if (price < 0) {
+                          return 'Price cannot be negative';
                         }
                         return null;
                       },
                     ),
                     const SizedBox(height: 16),
-                    DropdownButtonFormField<String>(
-                      value: _selectedStatus,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white.withOpacity(0.2),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(18),
-                          borderSide: BorderSide.none,
+                    GestureDetector(
+                      onTap: _selectExpirationDate,
+                      child: AbsorbPointer(
+                        child: _buildStyledTextFormField(
+                          controller: _expirationDateController,
+                          hintText: 'Expiration Date',
+                          icon: Iconsax.calendar_1,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please select an expiration date';
+                            }
+                            return null;
+                          },
                         ),
-                        hintStyle: const TextStyle(color: Colors.white54),
                       ),
-                      items: const [
-                        DropdownMenuItem(
-                            value: 'In stock', child: Text('In stock')),
-                        DropdownMenuItem(
-                            value: 'Low stock', child: Text('Low stock')),
-                        DropdownMenuItem(
-                            value: 'Out of stock', child: Text('Out of stock')),
-                      ],
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedStatus = value;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please select a status';
-                        }
-                        return null;
-                      },
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton(
