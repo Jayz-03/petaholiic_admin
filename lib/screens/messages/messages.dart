@@ -329,13 +329,13 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(
-                          'assets/images/doglayered.png',
+                          'assets/images/questionmark.png',
                           width: 200,
                           height: 200,
                         ),
                         Text(
                           textAlign: TextAlign.center,
-                          'No messages yet, but you can start conversation \nwith $fullname appointing for $service',
+                          'No messages yet, but you can start \nconversation with $fullname \nappointing for $service',
                           style: GoogleFonts.lexend(
                             fontSize: 16,
                             color: Color.fromARGB(255, 0, 86, 99),

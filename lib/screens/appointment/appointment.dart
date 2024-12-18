@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:petaholiic_admin/screens/appointment/medicalRecords.dart';
 import 'package:petaholiic_admin/screens/messages/messages.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'package:googleapis_auth/auth_io.dart';
+import 'package:googleapis_auth/googleapis_auth.dart';
+import 'package:http/http.dart' as http;
 
 class AdminAppointmentScreen extends StatefulWidget {
   const AdminAppointmentScreen({Key? key}) : super(key: key);
@@ -19,11 +26,12 @@ class _AdminAppointmentScreenState extends State<AdminAppointmentScreen>
       FirebaseDatabase.instance.ref().child('users');
   List<Map<String, dynamic>> _upcomingAppointments = [];
   List<Map<String, dynamic>> _pastAppointments = [];
+  List<Map<String, dynamic>> _rejectAppointments = [];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _fetchAppointments();
   }
 
@@ -38,7 +46,7 @@ class _AdminAppointmentScreenState extends State<AdminAppointmentScreen>
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/images/doglayered.png',
+                'assets/images/questionmark2.png',
                 width: 200,
                 height: 200,
               ),
@@ -130,12 +138,14 @@ class _AdminAppointmentScreenState extends State<AdminAppointmentScreen>
         setState(() {
           _upcomingAppointments = [];
           _pastAppointments = [];
+          _rejectAppointments = [];
         });
         return;
       }
 
       List<Map<String, dynamic>> upcoming = [];
       List<Map<String, dynamic>> past = [];
+      List<Map<String, dynamic>> reject = [];
 
       _usersRef.once().then((userEvent) {
         final userData = userEvent.snapshot.value as Map<dynamic, dynamic>?;
@@ -156,6 +166,8 @@ class _AdminAppointmentScreenState extends State<AdminAppointmentScreen>
 
             if (appointment['status'] == 'Pending') {
               upcoming.add(appointment);
+            } else if (appointment['status'] == 'Rejected') {
+              reject.add(appointment);
             } else if (appointment['status'] == 'Approved') {
               past.add(appointment);
             }
@@ -166,6 +178,7 @@ class _AdminAppointmentScreenState extends State<AdminAppointmentScreen>
           setState(() {
             _upcomingAppointments = upcoming;
             _pastAppointments = past;
+            _rejectAppointments = reject;
           });
         }
       });
@@ -173,7 +186,7 @@ class _AdminAppointmentScreenState extends State<AdminAppointmentScreen>
   }
 
   void _updateAppointmentStatus(
-      String userId, String appointmentId, String newStatus) {
+      String userId, String fcmToken, String appointmentId, String newStatus) {
     _appointmentsRef
         .child(userId)
         .child(appointmentId)
@@ -181,9 +194,102 @@ class _AdminAppointmentScreenState extends State<AdminAppointmentScreen>
       if (mounted) {
         setState(() {});
       }
+
+      // Determine the notification title and message
+      String title;
+      String message;
+
+      if (newStatus == 'Approved') {
+        title = 'Appointment Approved';
+        message =
+            'Your appointment with the vet has been approved. Please check your schedule for details.';
+      } else if (newStatus == 'Rejected') {
+        title = 'Appointment Rejected';
+        message =
+            'Unfortunately, your appointment with the vet has been rejected. Please contact us for assistance.';
+      } else {
+        return;
+      }
+
+      // Send push notification
+      _sendPushNotification(
+        fcmToken: fcmToken,
+        title: title,
+        body: message,
+      );
     }).catchError((error) {
       print("Failed to update appointment: $error");
     });
+  }
+
+  Future<void> _sendPushNotification({
+    required String fcmToken,
+    required String title,
+    required String body,
+  }) async {
+    const String projectId = 'petaholic-4b075';
+    final String url =
+        'https://fcm.googleapis.com/v1/projects/$projectId/messages:send';
+
+    try {
+      String accessToken = await _getAccessToken();
+
+      final Map<String, dynamic> message = {
+        'message': {
+          'token': fcmToken,
+          'notification': {
+            'title': title,
+            'body': body,
+          },
+          'data': {
+            'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+            'status': 'new',
+          },
+        },
+      };
+
+      print("Sending message: ${jsonEncode(message)}");
+
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken',
+        },
+        body: jsonEncode(message),
+      );
+
+      if (response.statusCode == 200) {
+        print('Push notification sent successfully.');
+      } else {
+        print('Failed to send push notification: ${response.body}');
+      }
+    } catch (e) {
+      print('Error sending push notification: $e');
+    }
+  }
+
+  Future<String> _getAccessToken() async {
+    try {
+      final serviceAccountKey = await rootBundle
+          .loadString('assets/petaholic-4b075-ab9d200ab6d8.json');
+
+      final Map<String, dynamic> keyData = jsonDecode(serviceAccountKey);
+
+      final accountCredentials = ServiceAccountCredentials.fromJson(keyData);
+
+      const List<String> scopes = [
+        'https://www.googleapis.com/auth/cloud-platform',
+      ];
+
+      final client = await clientViaServiceAccount(accountCredentials, scopes);
+
+      final accessToken = client.credentials.accessToken;
+
+      return accessToken.data;
+    } catch (e) {
+      throw Exception('Error getting access token: $e');
+    }
   }
 
   Widget _buildAppointmentCard(Map<String, dynamic> appointment) {
@@ -229,20 +335,18 @@ class _AdminAppointmentScreenState extends State<AdminAppointmentScreen>
               children: [
                 Text(
                   appointment['appointmentDate']?.toString() ?? 'No Date',
-                  style: GoogleFonts.lexend(
-                      fontSize: 14, color: Colors.grey),
+                  style: GoogleFonts.lexend(fontSize: 14, color: Colors.grey),
                 ),
                 SizedBox(width: 10),
                 Text(
                   appointment['appointmentTime']?.toString() ?? 'No Time',
-                  style: GoogleFonts.lexend(
-                      fontSize: 14, color: Colors.grey),
+                  style: GoogleFonts.lexend(fontSize: 14, color: Colors.grey),
                 ),
               ],
             ),
             if (appointment['status'] == 'Pending')
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
                     onPressed: () async {
@@ -250,6 +354,7 @@ class _AdminAppointmentScreenState extends State<AdminAppointmentScreen>
                       if (confirmed) {
                         _updateAppointmentStatus(
                           appointment['userId']?.toString() ?? '',
+                          appointment['fcmToken']?.toString() ?? '',
                           appointment['appointmentId']?.toString() ?? '',
                           'Approved',
                         );
@@ -276,6 +381,7 @@ class _AdminAppointmentScreenState extends State<AdminAppointmentScreen>
                       if (confirmed) {
                         _updateAppointmentStatus(
                           appointment['userId']?.toString() ?? '',
+                          appointment['fcmToken']?.toString() ?? '',
                           appointment['appointmentId']?.toString() ?? '',
                           'Rejected',
                         );
@@ -299,7 +405,7 @@ class _AdminAppointmentScreenState extends State<AdminAppointmentScreen>
               ),
             if (appointment['status'] == 'Approved')
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
                     onPressed: () {
@@ -317,6 +423,33 @@ class _AdminAppointmentScreenState extends State<AdminAppointmentScreen>
                     },
                     child: Text(
                       'Chat',
+                      style: GoogleFonts.lexend(
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 0, 86, 99),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MedicalRecordScreen(
+                            userId: appointment['userId'],
+                            appointmentId: appointment['appointmentId'], // Admin sender ID
+                          ),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'Create Medical Record',
                       style: GoogleFonts.lexend(
                         fontSize: 16,
                         color: Colors.white,
@@ -365,7 +498,8 @@ class _AdminAppointmentScreenState extends State<AdminAppointmentScreen>
           labelStyle: GoogleFonts.lexend(fontSize: 16),
           tabs: const [
             Tab(text: 'Pending'),
-            Tab(text: 'Done'),
+            Tab(text: 'Approved'),
+            Tab(text: 'Rejected'),
           ],
         ),
       ),
@@ -390,7 +524,7 @@ class _AdminAppointmentScreenState extends State<AdminAppointmentScreen>
                           ),
                           Text(
                             textAlign: TextAlign.center,
-                            'Currently, there is no upcoming \nappointment list here.',
+                            'Currently, there is no pending \nappointment list here.',
                             style: GoogleFonts.lexend(
                               fontSize: 16,
                               color: Color.fromARGB(255, 0, 86, 99),
@@ -428,7 +562,7 @@ class _AdminAppointmentScreenState extends State<AdminAppointmentScreen>
                           ),
                           Text(
                             textAlign: TextAlign.center,
-                            'Currently, there is no past \nappointment list here.',
+                            'Currently, there is no approved \nappointment list here.',
                             style: GoogleFonts.lexend(
                               fontSize: 16,
                               color: Color.fromARGB(255, 0, 86, 99),
@@ -444,6 +578,44 @@ class _AdminAppointmentScreenState extends State<AdminAppointmentScreen>
                       itemCount: _pastAppointments.length,
                       itemBuilder: (context, index) {
                         final appointment = _pastAppointments[index];
+                        return _buildAppointmentCard(appointment);
+                      },
+                    ),
+                  ),
+              ],
+            ),
+            Column(
+              children: [
+                if (_rejectAppointments.isEmpty)
+                  Expanded(
+                    child: Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/questionmark.png',
+                            width: 200,
+                            height: 200,
+                          ),
+                          Text(
+                            textAlign: TextAlign.center,
+                            'Currently, there is no rejected \nappointment list here.',
+                            style: GoogleFonts.lexend(
+                              fontSize: 16,
+                              color: Color.fromARGB(255, 0, 86, 99),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                else
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: _rejectAppointments.length,
+                      itemBuilder: (context, index) {
+                        final appointment = _rejectAppointments[index];
                         return _buildAppointmentCard(appointment);
                       },
                     ),

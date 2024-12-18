@@ -15,39 +15,24 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
     mediaSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-      backgroundColor: Color.fromARGB(255, 0, 86, 99),
+        backgroundColor: Color.fromARGB(255, 0, 86, 99),
         leading: IconButton(
-          icon: const Icon(Iconsax.arrow_left_1, color: Colors.white),
+          icon: const Icon(Iconsax.arrow_left_2, color: Colors.white),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
-        title: Center(
-          child: Text(
-            'About',
-            style: GoogleFonts.lexend(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
+        title: Text(
+          'About',
+          style: GoogleFonts.lexend(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
         iconTheme: const IconThemeData(
           color: Color.fromARGB(255, 223, 223, 223),
         ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Text(
-              'Done',
-              style: GoogleFonts.lexend(
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(14.0),

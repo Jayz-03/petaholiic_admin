@@ -95,9 +95,8 @@ class _ProductScreenState extends State<ProductScreen> {
 
                       // Determine stock status
                       int quantity = product['quantity'] ?? 0;
-                      String stockStatus = quantity < 20
-                          ? 'Low Stock'
-                          : 'In Stock';
+                      String stockStatus =
+                          quantity < 20 ? 'Low Stock' : 'In Stock';
 
                       return Card(
                         color: Colors.white,
@@ -120,13 +119,13 @@ class _ProductScreenState extends State<ProductScreen> {
                             contentPadding: const EdgeInsets.all(16),
                             leading: product['photoUrl'] != null
                                 ? Image.network(product['photoUrl'],
-                                    width: 50, height: 50, fit: BoxFit.cover)
+                                    width: 80, height: 80, fit: BoxFit.cover)
                                 : const Icon(Icons.image),
                             title: Text(
                               product['name'] ?? 'No Name',
                               style: GoogleFonts.lexend(
                                   color: Colors.black,
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w600),
                             ),
                             subtitle: Column(
@@ -136,7 +135,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                   '${product['category'] ?? 'N/A'}',
                                   style: GoogleFonts.lexend(
                                       color: Colors.black,
-                                      fontSize: 14,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.w400),
                                 ),
                                 const SizedBox(height: 4),
@@ -150,9 +149,10 @@ class _ProductScreenState extends State<ProductScreen> {
                                           color: stockStatus == 'Low Stock'
                                               ? Colors.red
                                               : Colors.green,
-                                          fontSize: 14,
+                                          fontSize: 12,
                                           fontWeight: FontWeight.w500),
                                     ),
+                                    const SizedBox(height: 4),
                                     Container(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 4, horizontal: 10),
@@ -164,7 +164,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                         'Stocks: $quantity',
                                         style: GoogleFonts.lexend(
                                             color: Colors.black,
-                                            fontSize: 14,
+                                            fontSize: 12,
                                             fontWeight: FontWeight.w600),
                                       ),
                                     ),
@@ -229,11 +229,13 @@ class _ProductScreenState extends State<ProductScreen> {
       builder: (context) => AlertDialog(
         title: Text(
           'Delete Product',
-          style: GoogleFonts.lexend(), textAlign: TextAlign.center,
+          style: GoogleFonts.lexend(),
+          textAlign: TextAlign.center,
         ),
         content: Text(
           'Are you sure you want to delete this product?',
-          style: GoogleFonts.lexend(), textAlign: TextAlign.center,
+          style: GoogleFonts.lexend(),
+          textAlign: TextAlign.center,
         ),
         actions: [
           Row(

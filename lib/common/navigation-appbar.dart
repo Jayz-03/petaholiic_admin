@@ -5,8 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:petaholiic_admin/screens/appbar-screens/notification.dart';
 import 'package:petaholiic_admin/screens/appointment/appointment.dart';
+import 'package:petaholiic_admin/screens/appointment/medicallist.dart';
 import 'package:petaholiic_admin/screens/authentication/login.dart';
-import 'package:petaholiic_admin/screens/home/home.dart';
 import 'package:petaholiic_admin/screens/products/products.dart';
 import 'package:petaholiic_admin/screens/sidebar-screens/about-us.dart';
 import 'package:petaholiic_admin/screens/sidebar-screens/my-profile.dart';
@@ -22,7 +22,6 @@ class _SideAndTabsNavsState extends State<SideAndTabsNavs> {
   String _userName = '';
 
   static List<Widget> _widgetOptions = <Widget>[
-    HomeScreen(),
     ProductScreen(),
     TelemedicineScreen(),
     AdminAppointmentScreen(),
@@ -149,6 +148,17 @@ class _SideAndTabsNavsState extends State<SideAndTabsNavs> {
                     );
                   },
                 ),
+                ListTile(
+                  leading: Icon(Icons.medical_services, color: Colors.white),
+                  title: Text('Medical Records',
+                      style: GoogleFonts.lexend(color: Colors.white)),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PetProfilesScreen()),
+                    );
+                  },
+                ),
                 SizedBox(height: 50),
                 ListTile(
                   leading: Icon(Iconsax.logout, color: Colors.white),
@@ -249,10 +259,6 @@ class _SideAndTabsNavsState extends State<SideAndTabsNavs> {
         ),
         child: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Iconsax.home_1),
-              label: 'Home',
-            ),
             BottomNavigationBarItem(
               icon: Icon(Iconsax.box),
               label: 'Inventory',

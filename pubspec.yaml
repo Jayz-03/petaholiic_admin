@@ -25,6 +25,9 @@ dependencies:
   agora_uikit: ^1.3.10
   agora_rtc_engine: ^6.3.2
   timeago: ^3.7.0
+  googleapis_auth: ^1.6.0
+  http: ^1.2.2
+  firebase_messaging: ^15.1.6
   
 flutter_launcher_icons:
   android: true
@@ -41,3 +44,4 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/petaholic-4b075-ab9d200ab6d8.json
