@@ -72,8 +72,14 @@ class PetProfilesScreen extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: ListTile(
                   leading: CircleAvatar(
-                    backgroundColor: const Color.fromARGB(255, 0, 86, 99),
-                    child: const Icon(Icons.pets, color: Colors.white),
+                    radius: 30,
+                    backgroundColor: Colors.white.withOpacity(0.5),
+                    backgroundImage: pet['profileImage'] != null
+                        ? NetworkImage(pet[
+                            'profileImage']) // Load the profile image from Firebase
+                        : AssetImage(
+                                'assets/images/questionmark.png') // Default placeholder image
+                            as ImageProvider, // Specify type to handle both
                   ),
                   title: Text(
                     pet['petName'] ?? 'Unknown Name',
@@ -87,7 +93,7 @@ class PetProfilesScreen extends StatelessWidget {
                         style: GoogleFonts.lexend(),
                       ),
                       Text(
-                        "Date of Birth: ${pet['dateOfBirth'] ?? 'N/A'}",
+                        "DOB: ${pet['dateOfBirth'] ?? 'N/A'}",
                         style: GoogleFonts.lexend(),
                       ),
                       Text(

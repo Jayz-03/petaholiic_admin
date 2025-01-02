@@ -27,6 +27,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _photoUrlController = TextEditingController();
   final TextEditingController _expirationController = TextEditingController();
+  final TextEditingController _stocksController = TextEditingController();
 
   bool _isLoading = true;
   File? _selectedImage; // To hold the selected image
@@ -49,6 +50,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
           _categoryController.text = productData['category'] ?? '';
           _photoUrlController.text = productData['photoUrl'] ?? '';
           _expirationController.text = productData['expirationDate'] ?? '';
+          _stocksController.text = productData['quantity']?.toString() ?? '';
           _isLoading = false;
         });
       }
@@ -92,6 +94,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
   void _updateProduct() async {
     try {
       double? price = double.tryParse(_priceController.text.trim());
+      int? stock = int.tryParse(_stocksController.text.trim());
       if (price == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -126,6 +129,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
         'category': _categoryController.text.trim(),
         'photoUrl': imageUrl, // Save the new photo URL
         'expirationDate': expirationDate, // Save expiration date
+        'quantity': stock,
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -272,6 +276,13 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                       controller: _priceController,
                       hintText: 'Price',
                       icon: Iconsax.money,
+                      keyboardType: TextInputType.number,
+                    ),
+                    const SizedBox(height: 10),
+                    _buildStyledTextFormField(
+                      controller: _stocksController,
+                      hintText: 'Quantity',
+                      icon: Iconsax.add_square,
                       keyboardType: TextInputType.number,
                     ),
                     const SizedBox(height: 10),
