@@ -13,6 +13,7 @@ class PetProfilesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 0, 86, 99),
         leading: IconButton(
@@ -64,7 +65,7 @@ class PetProfilesScreen extends StatelessWidget {
               final pet = profiles[index];
 
               return Card(
-                color: const Color.fromARGB(255, 240, 240, 240),
+                color: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -141,6 +142,7 @@ class MedicalListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 0, 86, 99),
         leading: IconButton(
@@ -172,7 +174,7 @@ class MedicalListScreen extends StatelessWidget {
                 final record = medicalRecords[recordKey];
 
                 return Card(
-                  color: const Color.fromARGB(255, 240, 240, 240),
+                  color: Colors.white,
                   margin:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   elevation: 5,

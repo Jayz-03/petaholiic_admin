@@ -317,7 +317,14 @@ class _AdminAppointmentScreenState extends State<AdminAppointmentScreen>
                   appointment['status']?.toString() ?? 'No Status',
                   style: GoogleFonts.lexend(
                     fontSize: 18,
-                    color: Color.fromARGB(255, 0, 86, 99),
+                    color: appointment['status'] == 'Approved'
+                        ? Colors.green
+                        : appointment['status'] == 'Pending'
+                            ? Colors.orange
+                            : appointment['status'] == 'Rejected'
+                                ? Colors.red
+                                : Color.fromARGB(
+                                    255, 0, 86, 99), // Default color
                   ),
                 ),
               ],
@@ -443,7 +450,8 @@ class _AdminAppointmentScreenState extends State<AdminAppointmentScreen>
                         MaterialPageRoute(
                           builder: (context) => MedicalRecordScreen(
                             userId: appointment['userId'],
-                            appointmentId: appointment['appointmentId'], // Admin sender ID
+                            appointmentId:
+                                appointment['appointmentId'], // Admin sender ID
                           ),
                         ),
                       );

@@ -7,7 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 const appId = "265410210bc44923a05c27e3cd34f58c";
 const token =
-    "007eJxTYPgmzRbfKXNvyWFzc9ZWk0nRTW8f3H7IbXAvw9zo8knxolwFBiMzUxNDAyNDg6RkExNLI+NEA9NkI/NU4+QUY5M0U4vkx8Km6Q2BjAxsz1cwMTJAIIjPw1CSmpOam5qSmZyZl8rAAADm8CEk";
+    "007eJxTYEh8ZffwbXaFzp/kZUsSbvy6vHD5mdunE9ovdoama82S8l6swGBkZmpiaGBkaJCUbGJiaWScaGCabGSeapycYmySZmqRfNSgPL0hkJFh9+0FDIxQCOLzMJSk5qTmpqZkJmfmpTIwAABg6CWb";
 const channel = "telemedicine";
 
 class VideoCallScreen extends StatefulWidget {
